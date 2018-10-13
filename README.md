@@ -4,6 +4,8 @@
 
 The resulting graph file can be used to perform graph visualisation with tools such as Gephi.
 
+![An email corpus viewed with Gephi](communities.png)
+
 ## Installation
 
 ```

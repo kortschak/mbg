@@ -127,9 +127,9 @@ messages:
 		}
 		fmt.Printf("%s\n", b)
 	case "gexf":
-		marshalGexf(os.Stdout, g)
+		err := marshalGexf(os.Stdout, g)
 		if err != nil {
-			log.Fatal("failed to format GEXF: %v", err)
+			log.Fatalf("failed to format GEXF: %v", err)
 		}
 	default:
 		log.Fatalf("invalid format: %q", *format)

@@ -121,7 +121,7 @@ messages:
 
 	switch *format {
 	case "dot":
-		b, err := dot.Marshal(g, "", "", "  ", false)
+		b, err := dot.MarshalMulti(g, "", "", "  ")
 		if err != nil {
 			log.Fatalf("failed to format DOT: %v", err)
 		}
@@ -228,8 +228,8 @@ type message struct {
 
 func (l message) Attributes() []encoding.Attribute {
 	return []encoding.Attribute{
-		{Key: "date", Value: fmt.Sprint(l.date)},
-		{Key: "message-id", Value: l.mid}}
+		{Key: `"date"`, Value: fmt.Sprintf("%q", l.date.Format(time.RFC3339))},
+		{Key: `"message-id"`, Value: l.mid}}
 }
 
 type edge struct {

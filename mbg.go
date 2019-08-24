@@ -21,7 +21,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/blabber/mbox"
+	"github.com/emersion/go-mbox"
 
 	"gonum.org/v1/gonum/graph"
 	"gonum.org/v1/gonum/graph/encoding"

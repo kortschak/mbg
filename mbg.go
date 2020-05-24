@@ -53,16 +53,24 @@ func main() {
 		}
 	}
 
-	ms := mbox.NewScanner(os.Stdin)
-	bufsize := 1 << 30
-	buf := make([]byte, bufsize)
-	ms.Buffer(buf, bufsize)
+	ms := mbox.NewReader(os.Stdin)
 
 	g := addrGraph{multi.NewUndirectedGraph(), make(map[string]int64)}
 
 messages:
-	for ms.Next() {
-		m := ms.Message()
+	for {
+		r, err := ms.NextMessage()
+		if err != nil {
+			if err != io.EOF {
+				log.Fatalf("failed to get message: %v", err)
+			}
+			break
+		}
+
+		m, err := mail.ReadMessage(r)
+		if err != nil {
+			log.Fatalf("failed to get read message: %v", err)
+		}
 		addrs, err := extractAddrs(nil, m.Header, "from", exclude, dropFrom)
 		if err != nil {
 			if err == dropMessage {
@@ -113,10 +121,6 @@ messages:
 				g.SetLine(g.message(p, q, date, mid))
 			}
 		}
-	}
-	err = ms.Err()
-	if err != nil {
-		log.Fatalf("error during mbox parse: %v", err)
 	}
 
 	switch *format {
